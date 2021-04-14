@@ -4,6 +4,7 @@
 // init project
 require('dotenv').config();
 var express = require('express');
+var requestIp = require('request-ip');
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -32,11 +33,11 @@ function getOSInfoFromHeaders(headers){
 }
 
 app.get("/api/whoami", function(request, response){
-  var ip = request.ip;
+  var ip = request.connection.remoteAddress; // on localhost > 127.0.0.1
   var language = request.acceptsLanguages()[0];
   var software = getOSInfoFromHeaders(request.headers);
   var responseObject = {
-      ip: ip,
+      ipaddress: ip,
       language: language,
       software: software
   };
